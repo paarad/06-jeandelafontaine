@@ -10,11 +10,11 @@ import type { FableResponse } from "@/lib/prompts";
 export default function CreatePage() {
 	const [result, setResult] = useState<(FableResponse & { language: "English" | "Français" }) | null>(null);
 	const [loading, setLoading] = useState(false);
-	const [lastInput, setLastInput] = useState<any>(null);
+	const [lastInput, setLastInput] = useState<Record<string, unknown> | null>(null);
 
 	useEffect(() => {
-		const raw = localStorage.getItem("fable_last_input");
-		if (raw) setLastInput(JSON.parse(raw));
+		const stored = localStorage.getItem("fable_last_input");
+		if (stored) setLastInput(JSON.parse(stored));
 	}, []);
 
 	function handleResult(data: FableResponse & { language: "English" | "Français" }) {
@@ -57,7 +57,6 @@ export default function CreatePage() {
 					<div className="w-full max-w-lg">
 						<FableForm onResult={(d) => {
 							setLastInput((() => {
-								const raw = localStorage.getItem("fable_history");
 								// persist last input separately
 								const lastRaw = localStorage.getItem("fable_last_input");
 								return lastRaw ? JSON.parse(lastRaw) : null;
