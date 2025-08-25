@@ -74,18 +74,33 @@ export function FableForm({ onResult }: { onResult: (data: FableResponse & { lan
 	}
 
 	return (
-		<Card>
+		<Card className="playful-card">
 			<CardHeader>
-				<CardTitle>Create a Fable</CardTitle>
+				<CardTitle className="fable-title">✨ Create a Fable ✨</CardTitle>
 			</CardHeader>
 			<CardContent>
 				<form onSubmit={handleSubmit} className="grid gap-4">
-					<Input placeholder="Characters (required)" value={values.characters} onChange={(e) => setValues(v => ({ ...v, characters: e.target.value }))} />
-					<Input placeholder="Setting (optional)" value={values.setting} onChange={(e) => setValues(v => ({ ...v, setting: e.target.value }))} />
-					<Textarea placeholder="Theme (required)" value={values.theme} onChange={(e) => setValues(v => ({ ...v, theme: e.target.value }))} />
+					<Input 
+						className="playful-input" 
+						placeholder="Characters (required)" 
+						value={values.characters} 
+						onChange={(e) => setValues(v => ({ ...v, characters: e.target.value }))} 
+					/>
+					<Input 
+						className="playful-input" 
+						placeholder="Setting (optional)" 
+						value={values.setting} 
+						onChange={(e) => setValues(v => ({ ...v, setting: e.target.value }))} 
+					/>
+					<Textarea 
+						className="playful-input" 
+						placeholder="Theme (required)" 
+						value={values.theme} 
+						onChange={(e) => setValues(v => ({ ...v, theme: e.target.value }))} 
+					/>
 					<div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
 						<Select value={values.style} onValueChange={(v) => setValues(val => ({ ...val, style: v as FableFormValues["style"] }))}>
-							<SelectTrigger><SelectValue placeholder="Style" /></SelectTrigger>
+							<SelectTrigger className="playful-input"><SelectValue placeholder="Style" /></SelectTrigger>
 							<SelectContent>
 								<SelectItem value="Classic">Classic</SelectItem>
 								<SelectItem value="Modern">Modern</SelectItem>
@@ -93,7 +108,7 @@ export function FableForm({ onResult }: { onResult: (data: FableResponse & { lan
 							</SelectContent>
 						</Select>
 						<Select value={values.tone} onValueChange={(v) => setValues(val => ({ ...val, tone: v as FableFormValues["tone"] }))}>
-							<SelectTrigger><SelectValue placeholder="Tone" /></SelectTrigger>
+							<SelectTrigger className="playful-input"><SelectValue placeholder="Tone" /></SelectTrigger>
 							<SelectContent>
 								<SelectItem value="Whimsical">Whimsical</SelectItem>
 								<SelectItem value="Darkly comic">Darkly comic</SelectItem>
@@ -102,14 +117,16 @@ export function FableForm({ onResult }: { onResult: (data: FableResponse & { lan
 							</SelectContent>
 						</Select>
 						<Select value={values.language} onValueChange={(v) => setValues(val => ({ ...val, language: v as FableFormValues["language"] }))}>
-							<SelectTrigger><SelectValue placeholder="Language" /></SelectTrigger>
+							<SelectTrigger className="playful-input"><SelectValue placeholder="Language" /></SelectTrigger>
 							<SelectContent>
 								<SelectItem value="English">English</SelectItem>
 								<SelectItem value="Français">Français</SelectItem>
 							</SelectContent>
 						</Select>
 					</div>
-					<Button type="submit" disabled={loading}>{loading ? "Generating…" : "Generate"}</Button>
+					<Button type="submit" disabled={loading} className="playful-button w-full">
+						{loading ? "✨ Generating… ✨" : "🎭 Generate Fable 🎭"}
+					</Button>
 				</form>
 			</CardContent>
 		</Card>

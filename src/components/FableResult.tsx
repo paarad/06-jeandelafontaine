@@ -18,24 +18,24 @@ export function FableResult({ data, language, onNew, onRegenerate }: { data: Fab
 	}
 
 	return (
-		<Card>
+		<Card className="playful-card">
 			<CardHeader className="flex flex-row items-center justify-between">
-				<CardTitle className="text-xl font-semibold">{data.title}</CardTitle>
+				<CardTitle className="fable-title">{data.title}</CardTitle>
 				<FableAudio text={fullText} language={language} />
 			</CardHeader>
 			<CardContent>
 				<div className="prose dark:prose-invert max-w-none">
-					<div className="font-serif whitespace-pre-wrap leading-7">
+					<div className="fable-verse whitespace-pre-wrap leading-7">
 						{data.lines.join("\n")}
 					</div>
 					<Separator className="my-4" />
-					<blockquote className="italic">{data.moral}</blockquote>
+					<div className="fable-moral">{data.moral}</div>
 				</div>
 			</CardContent>
 			<CardFooter className="flex gap-2 justify-end">
-				<Button variant="secondary" onClick={onRegenerate}>Regenerate</Button>
-				<Button variant="secondary" onClick={handleCopy}>Copy</Button>
-				<Button onClick={onNew}>New</Button>
+				<Button variant="secondary" onClick={onRegenerate} className="playful-button">🔄 Regenerate</Button>
+				<Button variant="secondary" onClick={handleCopy} className="playful-button">📋 Copy</Button>
+				<Button onClick={onNew} className="playful-button">✨ New</Button>
 			</CardFooter>
 		</Card>
 	);

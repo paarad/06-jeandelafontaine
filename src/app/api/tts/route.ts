@@ -5,7 +5,7 @@ import { createLimiter } from "@/lib/ratelimit";
 
 const Schema = z.object({
 	text: z.string().min(4).max(5000),
-	voice: z.enum(["kid-en", "kid-fr"]).default("kid-en"),
+	voice: z.enum(["kid-en", "women"]).default("kid-en"),
 	format: z.enum(["mp3", "opus"]).default("mp3"),
 	speed: z.number().min(0.5).max(1.25).optional().default(0.98),
 	pitch: z.number().min(-6).max(6).optional().default(0),
@@ -39,7 +39,7 @@ export async function POST(req: NextRequest) {
 			return new Response(JSON.stringify({ error: "Requested format not supported currently" }), { status: 400, headers: { "Content-Type": "application/json" } });
 		}
 
-		const voiceId: OpenAiVoice = voice === "kid-fr" ? "alloy" : "verse";
+		const voiceId: OpenAiVoice = voice === "women" ? "alloy" : "verse";
 
 		const response = await openai.audio.speech.create({
 			model: MODELS.TTS,

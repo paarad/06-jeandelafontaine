@@ -20,7 +20,7 @@ export function buildUserPrompt(opts: PromptOptions): string {
 		`- Language: ${opts.language}`,
 		"",
 		"Constraints:",
-		"- 10–20 lines total, then a single “Moral:” line.",
+		"- 10–20 lines total, then a single \"Moral:\" line.",
 		"- Rhythmic, vivid, easy to read aloud.",
 	].join("\n");
 }
@@ -39,24 +39,39 @@ export type FableResponse = {
 	moral: string;
 };
 
-const moralRegex = /^(?:\u201c|\u201d|\u00ab|\u00bb)?\s*(?:Moral|Morale)\s*[\:\-\u2014]\s*/i;
+// More comprehensive moral detection
+const moralPatterns = [
+	/^(?:\u201c|\u201d|\u00ab|\u00bb)?\s*(?:Moral|Morale)\s*[\:\-\u2014]\s*/i,
+	/^(?:\u201c|\u201d|\u00ab|\u00bb)?\s*(?:The\s+)?(?:Moral|Morale)\s*[\:\-\u2014]\s*/i,
+	/^(?:\u201c|\u201d|\u00ab|\u00bb)?\s*(?:Moral|Morale)\s*of\s+the\s+story\s*[\:\-\u2014]\s*/i,
+];
 
 export function parseFableResponse(text: string): FableResponse {
-	// Try to split title, verses, and moral
 	const lines = text.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
 	let title = "";
 	let moral = "";
 	const verses: string[] = [];
 
+	// First pass: find title and moral
 	for (const line of lines) {
+		// Title detection (first capitalized line that's not too long)
 		if (!title && line.length > 0 && line.length < 120 && /^[A-ZÀÂÄÇÉÈÊËÎÏÔÖÙÛÜŸ]/.test(line)) {
 			title = line;
 			continue;
 		}
-		if (moralRegex.test(line)) {
-			moral = line.replace(moralRegex, "Moral: ").trim();
+		
+		// Moral detection with multiple patterns
+		const isMoral = moralPatterns.some(pattern => pattern.test(line));
+		if (isMoral) {
+			// Clean up the moral line
+			let cleanMoral = line;
+			for (const pattern of moralPatterns) {
+				cleanMoral = cleanMoral.replace(pattern, "");
+			}
+			moral = `Moral: ${cleanMoral.trim()}`;
 			continue;
 		}
+		
 		verses.push(line);
 	}
 
@@ -65,9 +80,10 @@ export function parseFableResponse(text: string): FableResponse {
 		title = deriveTitle(verses[0]);
 	}
 
-	// Enforce constraints
-	const verseLines = verses.filter(l => !moralRegex.test(l));
+	// Filter out any remaining moral lines from verses
+	const verseLines = verses.filter(l => !moralPatterns.some(pattern => pattern.test(l)));
 	const clamped = verseLines.slice(0, 20);
+	
 	return {
 		title: title || "Untitled Fable",
 		lines: clamped,

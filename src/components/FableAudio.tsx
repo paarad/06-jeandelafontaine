@@ -4,11 +4,11 @@ import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
-export type Voice = "kid-en" | "kid-fr";
+export type Voice = "kid-en" | "women";
 
 export function FableAudio({ text, language }: { text: string; language: "English" | "Français" }) {
 	const audioRef = useRef<HTMLAudioElement | null>(null);
-	const defaultVoice: Voice = language === "Français" ? "kid-fr" : "kid-en";
+	const defaultVoice: Voice = language === "Français" ? "women" : "kid-en";
 	const [voice, setVoice] = useState<Voice>(() => {
 		if (typeof window === "undefined") return defaultVoice;
 		return (localStorage.getItem("fable_voice") as Voice) || defaultVoice;
@@ -47,7 +47,7 @@ export function FableAudio({ text, language }: { text: string; language: "Englis
 				<SelectTrigger className="w-[140px]"><SelectValue placeholder="Voice" /></SelectTrigger>
 				<SelectContent>
 					<SelectItem value="kid-en">Kid EN</SelectItem>
-					<SelectItem value="kid-fr">Kid FR</SelectItem>
+					<SelectItem value="women">Women</SelectItem>
 				</SelectContent>
 			</Select>
 			<Button onClick={handleListen} aria-label="Listen to this fable" disabled={loading}>
