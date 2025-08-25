@@ -4,13 +4,13 @@ import { Button } from "@/components/ui/button";
 export default function Home() {
 	return (
 		<main className="min-h-screen container mx-auto px-4 py-16 grid gap-10">
-			<section className="text-center space-y-6">
+			<section className="text-center space-y-8">
 				<div className="playful-gradient bg-clip-text text-transparent">
 					<h1 className="text-5xl font-bold mb-4">📚 jeandelafontaine AI 📚</h1>
 				</div>
-				<p className="text-xl text-muted-foreground">Create and read short AI‑generated fables in English or French.</p>
+				<p className="text-xl text-muted-foreground mb-8">Create and read short AI‑generated fables in English or French.</p>
 				<Link href="/create">
-					<Button size="lg" className="playful-button text-lg px-8 py-4">
+					<Button size="lg" className="playful-button text-lg px-8 py-4 mt-8">
 						🎭 Create a Fable 🎭
 					</Button>
 				</Link>

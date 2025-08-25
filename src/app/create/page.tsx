@@ -52,29 +52,33 @@ export default function CreatePage() {
 				<h1 className="text-2xl font-semibold">Create</h1>
 				<HistoryDrawer onRestore={handleRestore} />
 			</div>
-			<div className="grid gap-6 md:grid-cols-2">
-				<div>
-					<FableForm onResult={(d) => {
-						setLastInput((() => {
-							const raw = localStorage.getItem("fable_history");
-							// persist last input separately
-							const lastRaw = localStorage.getItem("fable_last_input");
-							return lastRaw ? JSON.parse(lastRaw) : null;
-						})());
-						handleResult(d);
-					}} />
-					<div id="aria-live" className="sr-only" aria-live="polite" />
+			<div className="grid gap-8 lg:grid-cols-2">
+				<div className="flex justify-center">
+					<div className="w-full max-w-lg">
+						<FableForm onResult={(d) => {
+							setLastInput((() => {
+								const raw = localStorage.getItem("fable_history");
+								// persist last input separately
+								const lastRaw = localStorage.getItem("fable_last_input");
+								return lastRaw ? JSON.parse(lastRaw) : null;
+							})());
+							handleResult(d);
+						}} />
+						<div id="aria-live" className="sr-only" aria-live="polite" />
+					</div>
 				</div>
-				<div>
-					{loading && <LoadingSkeleton />}
-					{result && (
-						<FableResult
-							data={result}
-							language={result.language}
-							onNew={() => setResult(null)}
-							onRegenerate={handleRegenerate}
-						/>
-					)}
+				<div className="flex justify-center">
+					<div className="w-full max-w-2xl">
+						{loading && <LoadingSkeleton />}
+						{result && (
+							<FableResult
+								data={result}
+								language={result.language}
+								onNew={() => setResult(null)}
+								onRegenerate={handleRegenerate}
+							/>
+						)}
+					</div>
 				</div>
 			</div>
 		</main>
